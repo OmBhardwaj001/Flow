@@ -177,7 +177,7 @@ const resendVerificationEmail = asyncHandler(async (req,res)=>{
       email:user.email,
       url:`${process.env.BASE_URL}/api/v1/users/verify/${unHashedToken}`,
       subejct:"email verification",
-      type:"verify"
+      mailType:"verify"
    })
 
    res.status(200).json(new ApiResponse(200, "user registered successfully"));
