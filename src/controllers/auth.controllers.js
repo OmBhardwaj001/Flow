@@ -24,17 +24,21 @@ dotenv.config();
          throw new ApiError(402,"user already exists")
       }
       
+
       const user = await User.create({
          username,
          email,
          password,
-         fullname
+         fullname,
       });
       
       if(!user)
       {
          throw new ApiError(402,"user not registered");
       }
+
+      
+
 
       const { unHashedToken, hashedToken, tokenExpiry } = user.generateTemporaryToken();
       user.emailVerificationToken = hashedToken;
