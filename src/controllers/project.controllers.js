@@ -1,0 +1,67 @@
+const getProjects = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+
+    // sare project aane chaiye
+    
+ 
+ })
+
+ const getProjectById = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const createProject = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const updateProject = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const deleteProject = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const addMembers = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const removeMembers = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const getProjecctMembers = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const updateProjectMembers = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const updateMemberRole = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
+
+ const deleteMember = asyncHandler(async (req,res)=>{
+    const {email , username, password , role} = req.body;
+    
+ 
+ })
