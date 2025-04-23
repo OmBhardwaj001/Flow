@@ -3,6 +3,8 @@ const getProjects = asyncHandler(async (req,res)=>{
 
     // sare project aane chaiye
     
+
+    
  
  })
 
@@ -15,7 +17,7 @@ const getProjects = asyncHandler(async (req,res)=>{
  const createProject = asyncHandler(async (req,res)=>{
     const {email , username, password , role} = req.body;
     
- 
+
  })
 
  const updateProject = asyncHandler(async (req,res)=>{

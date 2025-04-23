@@ -7,20 +7,23 @@ import crypto from "crypto"
 import dotenv from "dotenv"
 import jwt from "jsonwebtoken";
 
+
+
 dotenv.config();
 
 
-// const registerUser = asyncHandler(async (req,res)=>{
-   const registerUser = async (req,res)=>
+ const registerUser = asyncHandler(async (req,res)=>
    {
    const {email , username, password, fullname} = req.body;
-   try{
+   
+   
       const existingUser = await User.findOne({email});
       
       if(existingUser)
       {
          throw new ApiError(402,"user already exists")
       }
+      
       const user = await User.create({
          username,
          email,
@@ -37,6 +40,8 @@ dotenv.config();
       user.emailVerificationToken = hashedToken;
       user.emailVerificationExpiry =tokenExpiry;
 
+      
+
       await user.save();
 
       await sendMail({
@@ -47,14 +52,10 @@ dotenv.config();
          mailType:"verify"
       });
 
-      res.status(200).json(new ApiResponse(200,"User registered successfully"));
-   }
-   catch(err)
-   {
-      throw new ApiError(400,"error agya bhai", err)
-   }
+     
 
-}
+      res.status(200).json(new ApiResponse(200,"User registered successfully"));
+})
 
 const loginUser = asyncHandler(async (req,res)=>{
 
@@ -73,8 +74,10 @@ const loginUser = asyncHandler(async (req,res)=>{
       throw new ApiError(400, "incorrect email or password");
    }
 
-   const refreshToken = user.generateAccessToken();
-   const accessToken = user.generateRefreshToken();
+   const accessToken = user.generateAccessToken();
+   const refreshToken = user.generateRefreshToken();
+
+ 
 
 
    res.cookie("accessToken", accessToken,{
@@ -193,7 +196,7 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
     req.user = decode;
 
 
-   const newaccessToken = jwt.sign(
+    const newaccessToken = jwt.sign(
       {id:decode._id},
       process.env.ACCESS_TOKEN_SECRET,
       {expiresIn:"20s"}
@@ -202,7 +205,6 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
    res.cookie("accessToken",newaccessToken,{});
 
    res.status(200).json(200,"access token refreshed");
-
 });
 
 const forgotPasswordrequest = asyncHandler(async (req,res)=>{
@@ -228,7 +230,7 @@ const forgotPasswordrequest = asyncHandler(async (req,res)=>{
    mailType:"reset",
    })
 
-   res.status(200).json(new ApiResponse(200,"email sent "));
+   res.status(200).json(new ApiResponse(200,"email sent"));
 
 })
 
@@ -278,7 +280,7 @@ const getProfile = asyncHandler(async (req,res)=>{
       throw new ApiError(400, "user not found");
    }
    
-   res.status(200).json(200,`hey! ${user.fullName}` , user);
+   res.status(200).json(new ApiResponse(200,`${user.username}`, user));
 
 })
 

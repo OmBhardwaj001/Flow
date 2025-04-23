@@ -11,23 +11,25 @@ const isLoggedin =async (req,res,next)=>
     const accessToken = req.cookies?.accessToken;
     if(!accessToken)
     {
-        throw new ApiError(400,"token not found")
+        throw new ApiError(400,"token not found or user is not logged in")
     }
 
-        // const decoded = jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET);
-        const decoded = jwt.decode(accessToken);
+        const decoded = jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET);
         const user = await User.findById(decoded._id)
+        
         if(!user)
             {
                 throw new ApiError(400,"user not found");
             }
+
             req.user = user;
             next();
 }
 catch(err)
 {
-    throw new ApiError(400,"token invalid");
+    throw new ApiError(400,"token invalid",err);
 }
 }
+
 
 export default isLoggedin;

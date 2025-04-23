@@ -17,16 +17,16 @@ import {userRegistrationValidator,
     ResetPasswordValidator , 
     forgotPasswordValidator,
     emailvalidator} from "../validators/index.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 
 const router = Router();
 
-router.route('/register').post(userRegistrationValidator(), validate, registerUser); 
-router.route('/register').post(registerUser);
+router.route('/register').post(userRegistrationValidator(), validate, upload.single('avatar'),registerUser); 
 router.route('/verify/:token').get(verifyEmail);
 router.route('/login').post(userLoginValidator(),validate,loginUser);
 router.route('/logout').get(isLoggedin,logoutUser);
-router.route('/profile').get(getProfile);
+router.route('/profile').get(isLoggedin,getProfile);
 router.route('/resendVerificationEmail').post(emailvalidator(),validate,resendVerificationEmail);
 router.route('/forgotPassword').post(forgotPasswordValidator(),validate,forgotPasswordrequest);
 router.route('/reset-password/:token').post(ResetPasswordValidator(),validate,resetPassword);
