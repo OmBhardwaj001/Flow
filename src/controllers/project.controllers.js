@@ -162,10 +162,10 @@ const getProjecctMembers = asyncHandler(async (req, res) => {
 const updateMemberRole = asyncHandler(async (req, res) => {
   // update roles
 
-  const { projectid } = req.params;
+  const { projectid } =  req.params;
   const { email, role } = req.body;
   
-  
+
   if (!Object.values(UserRolesEnum).includes(role)) {
     throw new ApiError(400, "Invalid role provided");
   }
