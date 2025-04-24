@@ -8,12 +8,45 @@ import { asyncHandler } from "../utils/async-handler.js";
 
 const getProjects = asyncHandler(async (req, res) => {
   // sare project anege
+  const project = await Project.find({
+    createdBy: req.user._id,
+  });
+
+  const allprojects = project.map((project) => {
+    return {
+      projectId: project._id,
+      name: project.name,
+      description: project.description,
+    };
+  });
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "all your projects are:", allprojects));
 });
 
 const getProjectById = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
-
   // single project aega
+  const { projectid } = req.params;
+
+  const project = await Project.findOne({
+    _id: projectid,
+    createdBy: req.user._id,
+  });
+
+  if (!project) {
+    throw new ApiError(400, "project not found");
+  }
+
+  const allprojects = {
+    projectid: project._id,
+    name: project.name,
+    description: project.description,
+  };
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "all your projects are:", allprojects));
 });
 
 const createProject = asyncHandler(async (req, res) => {
@@ -40,15 +73,27 @@ const createProject = asyncHandler(async (req, res) => {
 });
 
 const updateProject = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { projectid } = req.params;
+  const { name, description } = req.body;
 
-  // update project
+  await Project.updateOne({ _id: projectid }, { $set: { name, description } });
+
+  res.status(200).json(new ApiResponse(200, "project deatails updated"));
 });
 
 const deleteProject = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { projectid } = req.params;
 
-  // delete project
+  const projecttoremove = await Project.findOneAndDelete({
+    _id: projectid,
+    createdBy: req.user._id,
+  });
+
+  if (!projecttoremove) {
+    throw new ApiError(404, " project to be removed not found");
+  }
+
+  res.status(200).json(new ApiResponse(200, "project removed"));
 });
 
 const addMembers = asyncHandler(async (req, res) => {
@@ -97,27 +142,70 @@ const removeMembers = asyncHandler(async (req, res) => {
 });
 
 const getProjecctMembers = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
-
   // get all memeber of project
+  const { projectid } = req.params;
+
+  const member = await ProjectMember.find({
+    project: projectid,
+    role: UserRolesEnum.MEMBER,
+  });
+
+  const allmember = member.map((member) => {
+    return {
+      user: member._id,
+    };
+  });
+
+  res.status(200).json(new ApiResponse(200, "all members", allmember));
 });
 
-const updateProjectMembers = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
+// const updateProjectMembers = asyncHandler(async (req, res) => {
+//   // update project member out/in
 
-  // update project member out/in
-});
+//   const {projectid} = req.params;
+//   const role = req.body;
+
+//   const projectmember = await
+
+// });
 
 const updateMemberRole = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
-
   // update roles
+
+  const { projectid } = req.params;
+  const { email, role } = req.body;
+
+  if (!Object.values(UserRolesEnum).includes(role)) {
+    throw new ApiError(400, "Invalid role provided");
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "user not found");
+  }
+
+  const projectmember = await ProjectMember.updateOne(
+    { user: user._id, project: projectid },
+    { $set: { role: UserRolesEnum[role] } },
+  );
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "member role successfully updated"));
 });
 
 const deleteMember = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
-
   // remove members
 });
 
-export { createProject, addMembers, removeMembers };
+export {
+  createProject,
+  addMembers,
+  removeMembers,
+  getProjecctMembers,
+  getProjects,
+  getProjectById,
+  updateProject,
+  deleteProject,
+  updateMemberRole,
+};
