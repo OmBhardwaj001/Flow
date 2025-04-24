@@ -170,7 +170,7 @@ const updateMemberRole = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid role provided");
   }
 
-  const user = await User.findOne({email});
+  const user = await User.findOne({ email });
   if (!user) {
     throw new ApiError(404, "user not found");
   }
