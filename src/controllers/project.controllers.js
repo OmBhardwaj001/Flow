@@ -159,16 +159,6 @@ const getProjecctMembers = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "all members", allmember));
 });
 
-// const updateProjectMembers = asyncHandler(async (req, res) => {
-//   // update project member out/in
-
-//   const {projectid} = req.params;
-//   const role = req.body;
-
-//   const projectmember = await
-
-// });
-
 const updateMemberRole = asyncHandler(async (req, res) => {
   // update roles
 
@@ -192,10 +182,6 @@ const updateMemberRole = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(new ApiResponse(200, "member role successfully updated"));
-});
-
-const deleteMember = asyncHandler(async (req, res) => {
-  // remove members
 });
 
 export {
