@@ -167,7 +167,7 @@ const updateMemberRole = asyncHandler(async (req, res) => {
   
 
   if (!Object.values(UserRolesEnum).includes(role)) {
-    throw new ApiError(400, "Invalid role provided");
+    throw new ApiError(400, "Invalid role   provided");
   }
 
   const user = await User.findOne({ email });
