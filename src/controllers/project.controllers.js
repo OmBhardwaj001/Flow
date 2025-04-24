@@ -1,143 +1,123 @@
 import { Project } from "../models/project.models.js";
 import User from "../models/user.models.js";
-import {ProjectMember} from "../models/projectmember.models.js"
+import { ProjectMember } from "../models/projectmember.models.js";
 import { UserRolesEnum } from "../utils/constants.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/async-handler.js";
 
+const getProjects = asyncHandler(async (req, res) => {
+  // sare project anege
+});
 
-const getProjects = asyncHandler(async (req,res)=>{
-    // sare project anege
- })
+const getProjectById = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
- const getProjectById = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+  // single project aega
+});
 
-    // single project aega
-    
- 
- })
+const createProject = asyncHandler(async (req, res) => {
+  // new project create karo , admin role wala hi kar skta hai
+  const { name, description } = req.body;
 
- const createProject = asyncHandler(async (req,res)=>{
-    // new project create karo , admin role wala hi kar skta hai
-    const {name, description} = req.body;
+  const project = await Project.create({
+    name,
+    description,
+    createdBy: req.user._id,
+  });
 
-    const project = await Project.create({
-      name,
-      description,
-      createdBy:req.user._id
-    })
-    
-    const member = await ProjectMember.create({
-      user:req.user._id,
-      project:project._id,
-      role:UserRolesEnum.ADMIN
-    })
+  const member = await ProjectMember.create({
+    user: req.user._id,
+    project: project._id,
+    role: UserRolesEnum.ADMIN,
+  });
 
-    if(!member)
-    {
-      throw new ApiError(400,"error while creating the memeber as admin");
-    }
+  if (!member) {
+    throw new ApiError(400, "error while creating the memeber as admin");
+  }
 
-    
+  res.status(200).json(new ApiResponse(200, "project created successfully"));
+});
 
-    res.status(200).json(new ApiResponse(200,"project created successfully"));
+const updateProject = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
- })
+  // update project
+});
 
- const updateProject = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+const deleteProject = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
-    // update project
-    
- 
- })
+  // delete project
+});
 
- const deleteProject = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+const addMembers = asyncHandler(async (req, res) => {
+  //project me member add karo
+  const { projectid } = req.params;
+  const { email } = req.body;
 
-    // delete project
-    
- 
- })
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(400, "user doesnt exists");
+  }
 
- const addMembers = asyncHandler(async (req,res)=>{
-    //project me member add karo
-    const {projectid} = req.params;
-    const {email} = req.body;
+  await ProjectMember.create({
+    user: user._id,
+    project: projectid,
+    role: UserRolesEnum.MEMBER,
+  });
 
-    const user = await User.findOne({email});
-    if(!user)
-    {
-      throw new ApiError(400,"user doesnt exists");
-    }
+  res
+    .status(200)
+    .json(new ApiResponse(200, "new member added successfully to project"));
+});
 
-    await ProjectMember.create({
-      user:user._id,
-      project:projectid,
-      role:UserRolesEnum.MEMBER
-    })
+const removeMembers = asyncHandler(async (req, res) => {
+  // remove member from project
 
-    res.status(200).json(new ApiResponse(200,"new member added successfully to project"))
- })
+  const { projectid } = req.params;
+  const { email } = req.body;
 
- const removeMembers = asyncHandler(async (req,res)=>{
-    // remove member from project
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(400, "please provide registerd email");
+  }
 
-    const {projectid} = req.params;
-    const {email} = req.body;
+  const usertoremove = await ProjectMember.findOneAndDelete({
+    user: user._id,
+    project: projectid,
+    role: UserRolesEnum.MEMBER,
+  });
 
-    const user = await User.findOne({email});
-    if(!user)
-    {
-      throw new ApiError(400,"please provide registerd email");
-    }
+  if (!usertoremove) {
+    throw new ApiError(400, "user is not added as member");
+  }
 
-    const usertoremove = await ProjectMember.findOneAndDelete({
-     user:user._id,
-      project:projectid,
-      role:UserRolesEnum.MEMBER
-    })
+  res.status(200).json(new ApiResponse(200, "member removed successfully"));
+});
 
-    if(!usertoremove)
-    {
-      throw new ApiError(400,"user is not added as member");
-    }
+const getProjecctMembers = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
-    res.status(200).json(new ApiResponse(200,"member removed successfully"));
- })
+  // get all memeber of project
+});
 
- const getProjecctMembers = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+const updateProjectMembers = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
-    // get all memeber of project
-    
- 
- })
+  // update project member out/in
+});
 
- const updateProjectMembers = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+const updateMemberRole = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
-    // update project member out/in
-    
- 
- })
+  // update roles
+});
 
- const updateMemberRole = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
+const deleteMember = asyncHandler(async (req, res) => {
+  const { email, username, password, role } = req.body;
 
-    // update roles
-    
- 
- })
+  // remove members
+});
 
- const deleteMember = asyncHandler(async (req,res)=>{
-    const {email , username, password , role} = req.body;
-
-    // remove members
-    
- 
- })
-
- export {createProject, addMembers, removeMembers}
+export { createProject, addMembers, removeMembers };

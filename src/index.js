@@ -16,5 +16,3 @@ connectDB()
     console.error("Mongodb connection error", err);
     process.exit(1);
   });
-
-  

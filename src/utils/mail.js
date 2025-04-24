@@ -1,7 +1,6 @@
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
 
-
 export const EmailVerificationMail = (username, EmailVerificationURL) => ({
   body: {
     name: username,
@@ -34,7 +33,6 @@ export const PasswordResetMail = (username, PasswordResetURL) => ({
   },
 });
 
-
 const sendMail = async (options) => {
   const mailGenerator = new Mailgen({
     theme: "default",
@@ -44,7 +42,6 @@ const sendMail = async (options) => {
     },
   });
 
-  
   let content;
   if (options.mailType === "verify") {
     content = EmailVerificationMail(options.username, options.url);

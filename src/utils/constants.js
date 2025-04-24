@@ -20,7 +20,6 @@ export const TaskStatusEnum = {
 
 export const AvailableTaskStatuses = Object.values(TaskStatusEnum);
 
-
 // userRolesEnum.ADMIN -> admin
 // AvailableUserRoles will have a object with value from UserRolesEnum ie ["admin", "project_admin", "member"]
 // now you can check for available role using AvailableuserRoles.includes(user.role)
