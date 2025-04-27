@@ -31,7 +31,7 @@ Projectrouter.route("/getprojectmembers/:projectid").get(
   isAdmin,
   getProjecctMembers,
 );
-Projectrouter.route("/getproject").get(isLoggedin, isAdmin, getProjects);
+Projectrouter.route("/getproject").get(isLoggedin,getProjects);
 Projectrouter.route("/getprojectbyID/:projectid").get(
   isLoggedin,
   isAdmin,

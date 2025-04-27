@@ -1,6 +1,6 @@
-const { ProjectMember } = require("../models/projectmember.models");
-const { ApiError } = require("../utils/api-error");
-const { UserRolesEnum } = require("../utils/constants");
+import {ProjectMember}  from "../models/projectmember.models.js"
+import  {ApiError } from "../utils/api-error.js"
+import  { UserRolesEnum } from "../utils/constants.js"
 
 const isAdmin = async (req, res, next) => {
   const { projectid } = req.params;

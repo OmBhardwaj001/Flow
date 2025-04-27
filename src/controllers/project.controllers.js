@@ -46,7 +46,7 @@ const getProjectById = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponse(200, "all your projects are:", allprojects));
+    .json(new ApiResponse(200, "project is:", allprojects));
 });
 
 const createProject = asyncHandler(async (req, res) => {
